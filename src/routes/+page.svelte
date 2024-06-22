@@ -1,30 +1,80 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { chunkWidth, getRondomNumner } from '$lib/config';
-	import Chunk from '$lib/chunk.svelte';
+	import { symbolSize, symbolsCount, symbols } from '$lib/config';
+	import Chain from '$lib/chain.svelte';
 	import '../app.scss';
 
-	let grid = 1;
 	let matrixWidth = 0;
-	let chunks: number[] = [];
+	let matrixHeight = 0;
+	// let columns: number[] = [];
+
+	// const calculations = () => {
+	// 	const gridX = matrixWidth > 0 ? Math.ceil(matrixWidth / (symbolSize * 10)) : 1;
+	// 	columns = new Array(gridX).fill(0);
+	// }
+
+	// onMount(() => {
+	// 	calculations();
+	// });
+
+	// const resize = () => {
+	// 	calculations();
+	// }
+	let canvas: HTMLCanvasElement;
+	let ctx: CanvasRenderingContext2D | null;
+	let matrix: any[] = [];
+
+	const getMatrix = () => {
+		matrix = Array.from({ length: matrixWidth / 10 }, () =>
+			Math.floor(Math.random() * symbolsCount)
+		);
+	};
+
+	function draw() {
+		if (!ctx) return;
+		ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = '#0f0';
+
+		for (let i = 0; i < matrix.length; i++) {
+			let symbol = symbols[matrix[i]];
+			let path = new Path2D(symbol.d);
+
+			let scale = 0.02;
+			ctx.save();
+			ctx.translate(i * 10, matrix[i] * 10);
+			ctx.scale(scale, scale);
+			ctx.fill(path);
+			ctx.restore();
+
+			if (matrix[i] * 10 > canvas.height) {
+				matrix[i] = 0;
+			} else {
+				matrix[i]++;
+			}
+		}
+
+		requestAnimationFrame(draw);
+	}
 
 	onMount(() => {
-		grid = matrixWidth > 0 ? Math.ceil(matrixWidth / (chunkWidth * 10)) : 1;
-		chunks = new Array(grid).fill(0);
+		ctx = canvas.getContext('2d');
+		getMatrix();
+		console.info(matrix);
+		draw();
 	});
-
-	$: console.info('grid', grid);
 </script>
 
-<svelte:window bind:innerWidth={matrixWidth} />
+<svelte:window bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} />
+<canvas bind:this={canvas} width={matrixWidth} height={matrixHeight}></canvas>
 
-<div id="matrix">
-	{#each chunks as chunk, index}
-		<div class="col" style="--col-width: {chunkWidth}rem">
-			<Chunk {index} />
+<!-- <div id="matrix">
+	{#each columns as _}
+		<div class="col" style="--col-width: {symbolSize}rem">
+			<Chain {matrixHeight} />
 		</div>
 	{/each}
-</div>
+</div> -->
 
 <style lang="scss">
 	#matrix {
@@ -35,12 +85,15 @@
 		align-items: flex-start;
 		justify-content: flex-start;
 		overflow: hidden;
-
 		background-color: black;
 
 		.col {
+			position: relative;
 			width: var(--col-width);
 			height: 100vh;
+			display: flex;
+			flex-flow: column wrap;
+			align-items: flex-start;
 		}
 	}
 </style>
