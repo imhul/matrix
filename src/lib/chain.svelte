@@ -37,6 +37,6 @@
 		position: absolute;
 		top: 0;
 		width: 100%;
-		// animation: var(--speed) linear 0s infinite running waterfall;
+		animation: var(--speed) linear 0s infinite running waterfall;
 	}
 </style>
