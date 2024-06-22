@@ -1,56 +1,68 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { symbolSize, symbolsCount, symbols } from '$lib/config';
-	import Chain from '$lib/chain.svelte';
+	import { symbolsCount, shadowColor, matrixColor, symbols } from '$lib/config';
+
 	import '../app.scss';
 
 	let matrixWidth = 0;
 	let matrixHeight = 0;
-	// let columns: number[] = [];
-
-	// const calculations = () => {
-	// 	const gridX = matrixWidth > 0 ? Math.ceil(matrixWidth / (symbolSize * 10)) : 1;
-	// 	columns = new Array(gridX).fill(0);
-	// }
-
-	// onMount(() => {
-	// 	calculations();
-	// });
-
-	// const resize = () => {
-	// 	calculations();
-	// }
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null;
 	let matrix: any[] = [];
 
+	const updateMatrixSymbols = () => {
+		for (let i = 0; i < matrix.length; i++) {
+			for (let j = 0; j < matrix[i].length; j++) {
+				matrix[i][j].symbol = Math.floor(Math.random() * symbolsCount);
+			}
+		}
+	};
+
 	const getMatrix = () => {
 		matrix = Array.from({ length: matrixWidth / 10 }, () =>
-			Math.floor(Math.random() * symbolsCount)
+			Array.from(
+				{
+					length: Math.floor(Math.random() * (matrixHeight / 17 - 50))
+				},
+				() => ({
+					symbol: Math.floor(Math.random() * symbolsCount),
+					speed: Math.random() * 2 + 1,
+					y: -Math.random() * matrixHeight
+				})
+			)
 		);
+		console.info(matrix);
 	};
 
 	function draw() {
-		if (!ctx) return;
-		ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+		if (!ctx || !canvas) return;
+		ctx.fillStyle = 'rgba(0, 0, 0, 0.02)';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.fillStyle = '#0f0';
+		ctx.fillStyle = matrixColor;
 
 		for (let i = 0; i < matrix.length; i++) {
-			let symbol = symbols[matrix[i]];
-			let path = new Path2D(symbol.d);
+			updateMatrixSymbols();
 
-			let scale = 0.02;
-			ctx.save();
-			ctx.translate(i * 10, matrix[i] * 10);
-			ctx.scale(scale, scale);
-			ctx.fill(path);
-			ctx.restore();
+			for (let j = 0; j < matrix[i].length; j++) {
+				let symbol = symbols[matrix[i][j].symbol];
+				let path = new Path2D(symbol.d);
 
-			if (matrix[i] * 10 > canvas.height) {
-				matrix[i] = 0;
-			} else {
-				matrix[i]++;
+				let scale = 0.02;
+				ctx.save();
+				ctx.translate(i * 10, matrix[i][j].y);
+				ctx.scale(scale, scale);
+				ctx.fill(path);
+				ctx.restore();
+
+				matrix[i][j].y += matrix[i][j].speed;
+
+				if (matrix[i][j].y > canvas.height) {
+					matrix[i][j] = {
+						symbol: Math.floor(Math.random() * symbolsCount),
+						speed: Math.random() * 2 + 1,
+						y: -Math.random() * matrixHeight
+					};
+				}
 			}
 		}
 
@@ -60,40 +72,21 @@
 	onMount(() => {
 		ctx = canvas.getContext('2d');
 		getMatrix();
-		console.info(matrix);
+		// console.info(matrix);
 		draw();
 	});
 </script>
 
 <svelte:window bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} />
-<canvas bind:this={canvas} width={matrixWidth} height={matrixHeight}></canvas>
-
-<!-- <div id="matrix">
-	{#each columns as _}
-		<div class="col" style="--col-width: {symbolSize}rem">
-			<Chain {matrixHeight} />
-		</div>
-	{/each}
-</div> -->
+<canvas bind:this={canvas} width={matrixWidth} height={matrixHeight} />
 
 <style lang="scss">
-	#matrix {
+	canvas {
+		position: fixed;
+		top: 0;
+		left: 0;
 		width: 100%;
 		height: 100%;
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: flex-start;
-		justify-content: flex-start;
-		overflow: hidden;
-		background-color: black;
-
-		.col {
-			position: relative;
-			width: var(--col-width);
-			height: 100vh;
-			display: flex;
-			flex-flow: column wrap;
-			align-items: flex-start;
-		}
+		background-color: #000;
 	}
 </style>
