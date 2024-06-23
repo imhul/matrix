@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	// config
 	import { symbolSize } from '$lib/config';
+	// components
 	import Chain from '$lib/chain.svelte';
+	import FPS from '$lib/fps.svelte';
+	// styles
 	import '../app.scss';
 
+	let fpsOpen = false;
 	let matrixWidth = 0;
 	let matrixHeight = 0;
 	let columns: number[] = [];
@@ -11,7 +16,7 @@
 	const calculations = () => {
 		const gridX = matrixWidth > 0 ? Math.ceil(matrixWidth / (symbolSize * 10)) : 1;
 		columns = new Array(gridX).fill(0);
-	}
+	};
 
 	onMount(() => {
 		calculations();
@@ -19,7 +24,7 @@
 
 	const resize = () => {
 		calculations();
-	}
+	};
 </script>
 
 <svelte:window on:resize={resize} bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} />
@@ -31,6 +36,7 @@
 		</div>
 	{/each}
 </div>
+{#if fpsOpen}<FPS />{/if}
 
 <style lang="scss">
 	#matrix {
@@ -53,4 +59,3 @@
 		}
 	}
 </style>
-
