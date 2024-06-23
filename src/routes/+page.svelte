@@ -16,9 +16,11 @@
 		maxWaterfallSpeed,
 		symbolShuffleSpeed
 	} from '$lib/config';
-
+	import FPS from '$lib/fps.svelte';
 	import '../app.scss';
 
+	let fpsOpen = false;
+	let configModalOpen = false;
 	let matrixWidth = 0;
 	let matrixHeight = 0;
 	let canvas: HTMLCanvasElement;
@@ -32,6 +34,14 @@
 	const getChain = () => Array.from({ length: getChainLength() }, () => getRondomSymbolIndex());
 	const getRondomSymbol = () => symbols[getRondomSymbolIndex()];
 	const getNewMatrix = () => ({ chain: getChain(), speed: getSpeed(), y: getY() });
+	const getMatrixLength = () => Math.ceil(matrixWidth / symbolSize);
+
+	function init() {
+		if (!canvas) return;
+		ctx = canvas.getContext('2d');
+		matrix = Array.from({ length: getMatrixLength() }, () => getNewMatrix());
+		draw();
+	}
 
 	function draw() {
 		if (!ctx || !canvas) return;
@@ -68,14 +78,20 @@
 		requestAnimationFrame(draw);
 	}
 
+	const keyup = (e: KeyboardEvent) => {
+		if (e.key === 'F' || e.key === 'f') fpsOpen = !fpsOpen;
+		if (e.key === 'C' || e.key === 'c') configModalOpen = !configModalOpen;
+		if (e.key === 'R' || e.key === 'r') init();
+	};
+
 	onMount(() => {
-		ctx = canvas.getContext('2d');
-		matrix = Array.from({ length: Math.ceil(matrixWidth / symbolSize) }, () => getNewMatrix());
-		draw();
+		init();
 	});
 </script>
 
-<svelte:window bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} />
+<svelte:window bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} on:keyup={keyup} />
+{#if fpsOpen}<FPS />{/if}
+{#if configModalOpen}config{/if}
 <canvas
 	bind:this={canvas}
 	width={matrixWidth}

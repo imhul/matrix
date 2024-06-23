@@ -1,0 +1,230 @@
+@font-face {
+  font-family: 'matrix';
+  src:
+    url('fonts/matrix.ttf?lrzzu9') format('truetype'),
+    url('fonts/matrix.woff?lrzzu9') format('woff'),
+    url('fonts/matrix.svg?lrzzu9#matrix') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="matrix-"], [class*=" matrix-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'matrix' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.matrix-one:before {
+  content: "\31";
+}
+.matrix-two:before {
+  content: "\32";
+}
+.matrix-three:before {
+  content: "\33";
+}
+.matrix-four:before {
+  content: "\34";
+}
+.matrix-five:before {
+  content: "\35";
+}
+.matrix-six:before {
+  content: "\36";
+}
+.matrix-seven:before {
+  content: "\37";
+}
+.matrix-eight:before {
+  content: "\38";
+}
+.matrix-nine:before {
+  content: "\39";
+}
+.matrix-a:before {
+  content: "\61";
+}
+.matrix-b:before {
+  content: "\62";
+}
+.matrix-c:before {
+  content: "\63";
+}
+.matrix-d:before {
+  content: "\64";
+}
+.matrix-e:before {
+  content: "\65";
+}
+.matrix-f:before {
+  content: "\66";
+}
+.matrix-g:before {
+  content: "\67";
+}
+.matrix-h:before {
+  content: "\68";
+}
+.matrix-i:before {
+  content: "\69";
+}
+.matrix-j:before {
+  content: "\6a";
+}
+.matrix-underscore:before {
+  content: "\5f";
+}
+.matrix-l:before {
+  content: "\6c";
+}
+.matrix-m:before {
+  content: "\6d";
+}
+.matrix-n:before {
+  content: "\6e";
+}
+.matrix-o:before {
+  content: "\6f";
+}
+.matrix-p:before {
+  content: "\70";
+}
+.matrix-q:before {
+  content: "\71";
+}
+.matrix-r:before {
+  content: "\72";
+}
+.matrix-s:before {
+  content: "\73";
+}
+.matrix-t:before {
+  content: "\74";
+}
+.matrix-u:before {
+  content: "\75";
+}
+.matrix-v:before {
+  content: "\76";
+}
+.matrix-w:before {
+  content: "\77";
+}
+.matrix-x:before {
+  content: "\78";
+}
+.matrix-y:before {
+  content: "\79";
+}
+.matrix-z:before {
+  content: "\7a";
+}
+.matrix-exclam:before {
+  content: "\21";
+}
+.matrix-quotedbl:before {
+  content: "\22";
+}
+.matrix-numbersign:before {
+  content: "\23";
+}
+.matrix-dollar:before {
+  content: "\24";
+}
+.matrix-percent:before {
+  content: "\25";
+}
+.matrix-ampersand:before {
+  content: "\26";
+}
+.matrix-quotesingle:before {
+  content: "\27";
+}
+.matrix-parenleft:before {
+  content: "\28";
+}
+.matrix-parenright:before {
+  content: "\29";
+}
+.matrix-asterisk:before {
+  content: "\2a";
+}
+.matrix-plus:before {
+  content: "\2b";
+}
+.matrix-comma:before {
+  content: "\2c";
+}
+.matrix-hyphen:before {
+  content: "\2d";
+}
+.matrix-hyphen1:before {
+  content: "\ad";
+}
+.matrix-period:before {
+  content: "\2e";
+}
+.matrix-slash:before {
+  content: "\2f";
+}
+.matrix-colon:before {
+  content: "\3a";
+}
+.matrix-semicolon:before {
+  content: "\3b";
+}
+.matrix-semicolon1:before {
+  content: "\37e";
+}
+.matrix-less:before {
+  content: "\3c";
+}
+.matrix-equal:before {
+  content: "\3d";
+}
+.matrix-greater:before {
+  content: "\3e";
+}
+.matrix-question:before {
+  content: "\3f";
+}
+.matrix-asciicircum:before {
+  content: "\5e";
+}
+.matrix-backslash:before {
+  content: "\5c";
+}
+.matrix-bracketleft:before {
+  content: "\5b";
+}
+.matrix-bracketright:before {
+  content: "\5d";
+}
+.matrix-braceleft:before {
+  content: "\7b";
+}
+.matrix-braceright:before {
+  content: "\7d";
+}
+.matrix-bar:before {
+  content: "\7c";
+}
+.matrix-asciitilde:before {
+  content: "\7e";
+}
+.matrix-k:before {
+  content: "\6b";
+}
+.matrix-zero:before {
+  content: "\30";
+}
