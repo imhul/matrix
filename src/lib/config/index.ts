@@ -69,15 +69,18 @@ const symbols = [
     { d: 'M343.040 281.088q-71.68 49.152-139.776 78.336t-127.488 41.472l15.36 92.16q89.088-20.48 156.672-50.176t119.808-69.632zM51.2 140.8l24.576 92.16q83.968-24.576 161.28-64.512t154.112-95.232l-31.744-92.16q-83.968 59.392-161.792 99.328t-146.432 60.416zM75.776 656.896l15.36 92.16q71.68-12.288 139.776-38.4t132.608-61.952l-28.672-88.064q-71.68 39.936-137.728 64t-121.344 32.256z'}
 ];
 
+const bgColor = '#000';
 const symbolsCount = symbols.length;
 const matrixColor = '#ADF69C';
-const shadowColor = '#068029';
+const shadowColor = '#197332';
 const firstSymbolColor = '#ACFFD7';
 const symbolSize = 3; // 1.6
-const minSpeed = 6000;
-const maxSpeed = 9000;
-const minChainSize = 80; // percentage of the screen
-const maxChainSize = 120; // percentage of the screen
+const symbolScale = 0.02;
+const minWaterfallSpeed = 4;
+const maxWaterfallSpeed = 9;
+const minChainSize = 30; // percentage of the screen
+const maxChainSize = 50; // percentage of the screen
+const symbolShuffleSpeed = 0.1; // not for first symbol in chain
 
 const getRondomNumner = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min) + min);
@@ -85,14 +88,17 @@ const getRondomNumner = (min: number, max: number) => {
 
 export {
     symbols,
-    minSpeed,
-    maxSpeed,
+    bgColor,
     symbolSize,
     matrixColor,
     shadowColor,
+    symbolScale,
     minChainSize,
     maxChainSize,
     symbolsCount,
     getRondomNumner,
     firstSymbolColor,
+    minWaterfallSpeed,
+    maxWaterfallSpeed,
+    symbolShuffleSpeed,
 };

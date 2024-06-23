@@ -1,6 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { symbolsCount, shadowColor, matrixColor, symbols } from '$lib/config';
+	import {
+		symbols,
+		bgColor,
+		symbolSize,
+		matrixColor,
+		shadowColor,
+		symbolScale,
+		minChainSize,
+		maxChainSize,
+		symbolsCount,
+		getRondomNumner,
+		firstSymbolColor,
+		minWaterfallSpeed,
+		maxWaterfallSpeed,
+		symbolShuffleSpeed
+	} from '$lib/config';
 
 	import '../app.scss';
 
@@ -10,59 +25,43 @@
 	let ctx: CanvasRenderingContext2D | null;
 	let matrix: any[] = [];
 
-	const updateMatrixSymbols = () => {
-		for (let i = 0; i < matrix.length; i++) {
-			for (let j = 0; j < matrix[i].length; j++) {
-				matrix[i][j].symbol = Math.floor(Math.random() * symbolsCount);
-			}
-		}
-	};
-
-	const getMatrix = () => {
-		matrix = Array.from({ length: matrixWidth / 10 }, () =>
-			Array.from(
-				{
-					length: Math.floor(Math.random() * (matrixHeight / 17 - 50))
-				},
-				() => ({
-					symbol: Math.floor(Math.random() * symbolsCount),
-					speed: Math.random() * 2 + 1,
-					y: -Math.random() * matrixHeight
-				})
-			)
-		);
-		console.info(matrix);
-	};
+	const getY = () => -Math.random() * matrixHeight; //  * 0.5
+	const getSpeed = () => Math.random() / getRondomNumner(minWaterfallSpeed, maxWaterfallSpeed);
+	const getChainLength = () => Math.floor(getRondomNumner(minChainSize, maxChainSize));
+	const getRondomSymbolIndex = () => Math.floor(Math.random() * symbolsCount);
+	const getChain = () => Array.from({ length: getChainLength() }, () => getRondomSymbolIndex());
+	const getRondomSymbol = () => symbols[getRondomSymbolIndex()];
+	const getNewMatrix = () => ({ chain: getChain(), speed: getSpeed(), y: getY() });
 
 	function draw() {
 		if (!ctx || !canvas) return;
-		ctx.fillStyle = 'rgba(0, 0, 0, 0.02)';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = bgColor;
+		ctx.fillRect(0, 0, matrixWidth, matrixHeight);
 		ctx.fillStyle = matrixColor;
 
 		for (let i = 0; i < matrix.length; i++) {
-			updateMatrixSymbols();
+			let chain = matrix[i].chain;
 
-			for (let j = 0; j < matrix[i].length; j++) {
-				let symbol = symbols[matrix[i][j].symbol];
+			for (let j = 0; j < chain.length; j++) {
+				const isFirstSymbol = j === chain.length - 1;
+				let symbol =
+					isFirstSymbol || (!isFirstSymbol && Math.random() * 100 > 100 - j * symbolShuffleSpeed)
+						? getRondomSymbol()
+						: symbols[chain[j]];
 				let path = new Path2D(symbol.d);
 
-				let scale = 0.02;
 				ctx.save();
-				ctx.translate(i * 10, matrix[i][j].y);
-				ctx.scale(scale, scale);
+				ctx.translate(i * 10, matrix[i].y + j * (symbolSize + 15));
+				ctx.scale(symbolScale, symbolScale);
+				ctx.fillStyle = isFirstSymbol ? firstSymbolColor : matrixColor;
+				ctx.shadowColor = isFirstSymbol ? firstSymbolColor : shadowColor;
+				ctx.shadowBlur = 16;
+				ctx.globalAlpha = 0.02 + (1 - 0.2) * (j / (chain.length - 1));
 				ctx.fill(path);
 				ctx.restore();
 
-				matrix[i][j].y += matrix[i][j].speed;
-
-				if (matrix[i][j].y > canvas.height) {
-					matrix[i][j] = {
-						symbol: Math.floor(Math.random() * symbolsCount),
-						speed: Math.random() * 2 + 1,
-						y: -Math.random() * matrixHeight
-					};
-				}
+				matrix[i].y += matrix[i].speed;
+				if (matrix[i].y > canvas.height) matrix[i] = getNewMatrix();
 			}
 		}
 
@@ -71,22 +70,15 @@
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
-		getMatrix();
-		// console.info(matrix);
+		matrix = Array.from({ length: Math.ceil(matrixWidth / symbolSize) }, () => getNewMatrix());
 		draw();
 	});
 </script>
 
 <svelte:window bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} />
-<canvas bind:this={canvas} width={matrixWidth} height={matrixHeight} />
-
-<style lang="scss">
-	canvas {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #000;
-	}
-</style>
+<canvas
+	bind:this={canvas}
+	width={matrixWidth}
+	height={matrixHeight}
+	style="position: fixed; top: 0; left: 0"
+/>
