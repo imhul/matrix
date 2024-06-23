@@ -15,8 +15,6 @@
 	import '../app.scss';
 
 	export let matrixHeight: number;
-
-	$: d = '';
 	const chainLength = Math.ceil(
 		((matrixHeight / 100) * getRondomNumner(minChainSize, maxChainSize)) / (symbolSize * 10)
 	);
@@ -28,7 +26,7 @@
 
 <div class="chain" style="--speed: {Math.floor(speed / 1000)}s">
 	{#each chain as _, index}
-		<Symbol {d} {index} chainLength={chain.length - 1} />
+		<Symbol {index} chainLength={chain.length - 1} />
 	{/each}
 </div>
 
@@ -36,6 +34,11 @@
 	.chain {
 		position: absolute;
 		top: 0;
+		display: flex;
+		flex-flow: column wrap;
+		align-items: flex-start;
+		justify-content: flex-start;
+		
 		width: 100%;
 		animation: var(--speed) linear 0s infinite running waterfall;
 	}

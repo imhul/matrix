@@ -1,16 +1,17 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
+	import { afterUpdate } from 'svelte';
 	// config
 	import {
 		symbols,
+		symbolSize,
 		matrixColor,
 		shadowColor,
-        symbolsCount,
+		symbolsCount,
 		getRondomNumner,
-		firstSymbolColor,
+		firstSymbolColor
 	} from '$lib/config';
 
-	export let d = '';
+	export let symbol = '';
 	export let index = 0;
 	export let chainLength = 0;
 
@@ -19,15 +20,10 @@
 		return opacity.toFixed(1);
 	};
 
-	const updateSymbol = () => {
-		const symbol = symbols[getRondomNumner(1, symbolsCount)];
-		d = symbol.d;
-	};
-
 	afterUpdate(() => {
-        const timeout = 100 * index;
+		const timeout = 100 * index;
 		const interval = setInterval(() => {
-			updateSymbol();
+			symbol = symbols[getRondomNumner(1, symbolsCount)];
 		}, timeout);
 
 		return () => {
@@ -36,20 +32,11 @@
 	});
 </script>
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	viewBox="0 0 1024 1024"
-	style="--opacity: {getOpacity(index)}"
->
-	{#if index === chainLength}
-		<path fill={firstSymbolColor} {d} />
-	{:else}
-		<path fill={matrixColor} {d} />
-	{/if}
-</svg>
-
-<style lang="scss">
-	svg {
-		opacity: var(--opacity);
-	}
-</style>
+<i
+	class="matrix-{symbol}"
+	style="color: {index === chainLength
+		? firstSymbolColor
+		: matrixColor}; text-shadow: 0 0 1rem {shadowColor}; opacity: {getOpacity(
+		index
+	)}; font-size: {symbolSize}rem;"
+/>
