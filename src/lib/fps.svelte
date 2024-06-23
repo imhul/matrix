@@ -19,6 +19,7 @@
 		`border: 0.3rem solid ${matrixColor};` +
 		`color: ${matrixColor};` +
 		`box-shadow: 0 0 3rem ${shadowColor};` +
+		'font-family: monospace;' +
         `font-size: ${symbolSize}rem;` +
 		'background-color: #000000;';
 

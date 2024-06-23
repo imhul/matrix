@@ -11,9 +11,10 @@
 		firstSymbolColor
 	} from '$lib/config';
 
-	export let symbol = '';
 	export let index = 0;
 	export let chainLength = 0;
+	let symbol = '';
+	const isFirstSymbol = index === chainLength;
 
 	const getOpacity = (index: number) => {
 		const opacity = (index / chainLength) * 0.85;
@@ -24,7 +25,7 @@
 		const timeout = 100 * index;
 		const interval = setInterval(() => {
 			symbol = symbols[getRondomNumner(1, symbolsCount)];
-		}, timeout);
+		}, (isFirstSymbol ? 100 : timeout));
 
 		return () => {
 			clearInterval(interval);
@@ -34,7 +35,7 @@
 
 <i
 	class="matrix-{symbol}"
-	style="color: {index === chainLength
+	style="color: {isFirstSymbol
 		? firstSymbolColor
 		: matrixColor}; text-shadow: 0 0 1rem {shadowColor}; opacity: {getOpacity(
 		index

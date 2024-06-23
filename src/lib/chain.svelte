@@ -16,7 +16,7 @@
 
 	export let matrixHeight: number;
 	const chainLength = Math.ceil(
-		((matrixHeight / 100) * getRondomNumner(minChainSize, maxChainSize)) / (symbolSize * 10)
+		matrixHeight / (symbolSize * 10)
 	);
 	const speed = getRondomNumner(minSpeed, maxSpeed);
 	const chain = new Array(chainLength)

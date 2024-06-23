@@ -17,8 +17,8 @@ const matrixColor = '#ADF69C';
 const shadowColor = '#068029';
 const firstSymbolColor = '#ACFFD7';
 const symbolSize = 3; // 1.6
-const minSpeed = 6000;
-const maxSpeed = 9000;
+const minSpeed = 16 * 1000;
+const maxSpeed = 20 * 1000;
 const minChainSize = 80; // percentage of the screen
 const maxChainSize = 120; // percentage of the screen
 

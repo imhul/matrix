@@ -12,6 +12,7 @@
 	let matrixWidth = 0;
 	let matrixHeight = 0;
 	let columns: number[] = [];
+	let configModalOpen = false;
 
 	const calculations = () => {
 		const gridX = matrixWidth > 0 ? Math.ceil(matrixWidth / (symbolSize * 10)) : 1;
@@ -25,9 +26,15 @@
 	const resize = () => {
 		calculations();
 	};
+
+	const keyup = (e: KeyboardEvent) => {
+		if (e.key === 'F' || e.key === 'f') fpsOpen = !fpsOpen;
+		if (e.key === 'C' || e.key === 'c') configModalOpen = !configModalOpen;
+		if (e.key === 'R' || e.key === 'r') calculations();
+	};
 </script>
 
-<svelte:window on:resize={resize} bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} />
+<svelte:window on:resize={resize} bind:innerWidth={matrixWidth} bind:innerHeight={matrixHeight} on:keyup={keyup} />
 
 <div id="matrix">
 	{#each columns as _}
