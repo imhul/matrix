@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 	// config
 	import {
 		symbols,
@@ -13,31 +13,46 @@
 
 	export let index = 0;
 	export let chainLength = 0;
-	let symbol = '';
+
 	const isFirstSymbol = index === chainLength;
+	const interval = ((chainLength - index) * 1000) / chainLength;
+	const timeout = interval > 2000 ? 2000 : interval;
+	const textColor = isFirstSymbol ? firstSymbolColor : matrixColor;
+	let symbol = '';
 
 	const getOpacity = (index: number) => {
 		const opacity = (index / chainLength) * 0.85;
 		return opacity.toFixed(1);
 	};
 
-	afterUpdate(() => {
-		const timeout = 100 * index;
-		const interval = setInterval(() => {
+	const update = () => {
+		const animate = () => {
 			symbol = symbols[getRondomNumner(1, symbolsCount)];
-		}, (isFirstSymbol ? 100 : timeout));
-
-		return () => {
-			clearInterval(interval);
+			if (isFirstSymbol) {
+				requestAnimationFrame(animate);
+			} else {
+				setTimeout(() => {
+					requestAnimationFrame(animate);
+				}, timeout);
+			}
 		};
+		animate();
+	};
+
+	onMount(() => {
+		update();
 	});
 </script>
 
 <i
 	class="matrix-{symbol}"
-	style="color: {isFirstSymbol
-		? firstSymbolColor
-		: matrixColor}; text-shadow: 0 0 1rem {shadowColor}; opacity: {getOpacity(
+	style="color: {
+		textColor}; text-shadow: 0.5rem 0 1rem {
+		shadowColor}, 0 0 2rem {
+		shadowColor}, 0 0.5rem 1rem {
+		shadowColor}, -0.5rem 0 1rem {
+		shadowColor}, 0 -0.5rem 1rem {
+		shadowColor}; opacity: {getOpacity(
 		index
 	)}; font-size: {symbolSize}rem;"
 />
