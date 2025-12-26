@@ -11,7 +11,7 @@
 		minChainSize,
 		maxChainSize,
 		symbolsCount,
-		getRondomNumner,
+		getRandomNumber,
 		firstSymbolColor,
 		minWaterfallSpeed,
 		maxWaterfallSpeed,
@@ -35,8 +35,8 @@
 	let matrix: Matrix;
 
 	const getY = () => -Math.random() * matrixHeight; //  * 0.5
-	const getSpeed = () => Math.random() / getRondomNumner(minWaterfallSpeed, maxWaterfallSpeed);
-	const getChainLength = () => Math.floor(getRondomNumner(minChainSize, maxChainSize));
+	const getSpeed = () => Math.random() / getRandomNumber(minWaterfallSpeed, maxWaterfallSpeed);
+	const getChainLength = () => Math.floor(getRandomNumber(minChainSize, maxChainSize));
 	const getRondomSymbolIndex = () => Math.floor(Math.random() * symbolsCount);
 	const getChain = () => Array.from({ length: getChainLength() }, () => getRondomSymbolIndex());
 	const getRondomSymbol = () => symbols[getRondomSymbolIndex()];
