@@ -7,7 +7,7 @@
 		matrixColor,
 		shadowColor,
 		symbolsCount,
-		getRondomNumner,
+		getRandomNumber,
 		firstSymbolColor
 	} from '$lib/config';
 
@@ -27,7 +27,7 @@
 
 	const update = () => {
 		const animate = () => {
-			symbol = symbols[getRondomNumner(1, symbolsCount)];
+			symbol = symbols[getRandomNumber(1, symbolsCount)];
 			if (isFirstSymbol) {
 				requestAnimationFrame(animate);
 			} else {

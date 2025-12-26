@@ -22,7 +22,7 @@ const maxDelay = 5000;
 const minChainSize = 30; // percentage of the screen
 const maxChainSize = 50; // percentage of the screen
 
-const getRondomNumner = (min: number, max: number) => {
+const getRandomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min) + min);
 };
 
@@ -36,6 +36,6 @@ export {
     minChainSize,
     maxChainSize,
     symbolsCount,
-    getRondomNumner,
+    getRandomNumber,
     firstSymbolColor,
 };

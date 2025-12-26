@@ -4,24 +4,23 @@
 		speed,
 		symbols,
 		maxDelay,
-		symbolSize,
 		symbolsCount,
 		minChainSize,
 		maxChainSize,
-		getRondomNumner,
+		getRandomNumber,
 	} from '$lib/config';
 	import Symbol from '$lib/symbol.svelte';
 	// styles
 	import '../app.scss';
 
 	export let matrixHeight: number;
-	const chainLength = getRondomNumner(minChainSize, maxChainSize);
+	const chainLength = getRandomNumber(minChainSize, maxChainSize);
 	const chain = new Array(chainLength)
 		.fill(null)
-		.map(() => symbols[getRondomNumner(1, symbolsCount - 1)]);
+		.map(() => symbols[getRandomNumber(1, symbolsCount - 1)]);
 </script>
 
-<div class="chain" style="--speed: {speed}ms; --delay: {getRondomNumner(1, maxDelay)}ms;">
+<div class="chain" style="--speed: {speed}ms; --delay: {getRandomNumber(1, maxDelay)}ms;">
 	{#each chain as _, index}
 		<Symbol {index} chainLength={chain.length - 1} />
 	{/each}
