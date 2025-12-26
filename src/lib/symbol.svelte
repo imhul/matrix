@@ -6,7 +6,7 @@
 		matrixColor,
 		shadowColor,
         symbolsCount,
-		getRondomNumner,
+		getRandomNumber,
 		firstSymbolColor,
 	} from '$lib/config';
 
@@ -20,7 +20,7 @@
 	};
 
 	const updateSymbol = () => {
-		const symbol = symbols[getRondomNumner(1, symbolsCount)];
+		const symbol = symbols[getRandomNumber(1, symbolsCount)];
 		d = symbol.d;
 	};
 

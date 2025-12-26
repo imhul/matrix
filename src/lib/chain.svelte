@@ -8,7 +8,7 @@
 		minChainSize,
 		maxChainSize,
 		symbolsCount,
-		getRondomNumner
+		getRandomNumber
 	} from '$lib/config';
 	import Symbol from '$lib/symbol.svelte';
 	// styles
@@ -18,12 +18,12 @@
 
 	$: d = '';
 	const chainLength = Math.ceil(
-		((matrixHeight / 100) * getRondomNumner(minChainSize, maxChainSize)) / (symbolSize * 10)
+		((matrixHeight / 100) * getRandomNumber(minChainSize, maxChainSize)) / (symbolSize * 10)
 	);
-	const speed = getRondomNumner(minSpeed, maxSpeed);
+	const speed = getRandomNumber(minSpeed, maxSpeed);
 	const chain = new Array(chainLength)
 		.fill(null)
-		.map(() => symbols[getRondomNumner(1, symbolsCount)]);
+		.map(() => symbols[getRandomNumber(1, symbolsCount)]);
 </script>
 
 <div class="chain" style="--speed: {Math.floor(speed / 1000)}s">
