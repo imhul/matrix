@@ -21,7 +21,7 @@ import { Matrix } from './matrix'
 
 (async () => {
     const app = new Application()
-    app.init({ background: "#000000ff", resizeTo: window })
+    await app.init({ background: "#000000ff", resizeTo: window })
     document.getElementById("pixi-container")!.appendChild(app.canvas)
 
     const matrix = new Matrix(app)
