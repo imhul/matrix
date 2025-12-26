@@ -1,162 +1,143 @@
-import {
-    Sprite,
-    Graphics,
-    Container,
-    Application,
-    RenderTexture,
-} from 'pixi.js'
-import {
-    symbols,
-    symbolSize,
-    symbolScale,
-    minChainSize,
-    maxChainSize,
-    symbolsCount,
-    getRandomNumber,
-    firstSymbolColor,
-    matrixColor,
-    minWaterfallSpeed,
-    maxWaterfallSpeed,
-    symbolShuffleSpeed,
-} from './config'
-import type { Symbol, Matrix as MatrixType } from './types'
-
-const toPixiColor = (hex: string) => Number(`0x${hex.slice(1)}`)
+import { Container, Application, Texture, Text, Ticker, Sprite } from "pixi.js"
+import { config } from "./config"
 
 export class Matrix {
-    app: Application;
-    matrix: MatrixType = [];
-    pathCache: Map<string, Graphics> = new Map();
-    columnTextures: RenderTexture[] = [];
-    container: Container;
+    app: Application
+    particleContainer: Container
+    columns: Column[] = []
+    textures: Texture[] = []
 
     constructor(app: Application) {
         this.app = app
-        this.container = new Container()
-        app.stage.addChild(this.container)
+        this.particleContainer = new Container()
+        app.stage.addChild(this.particleContainer)
+        this.generateTextures()
+        this.createColumns()
 
-        this.init()
-        app.ticker.add(this.update)
-    }
-
-    reset = () => {
-        this.container.removeChildren()
-        this.matrix = []
-        this.init()
-    };
-
-    init() {
-        const cols = Math.ceil(this.app.renderer.width / symbolSize)
-        for (let i = 0; i < cols; i++) {
-            this.matrix.push(this.getNewUnit())
-            this.createColumn(i)
-        }
-    }
-
-    /** --- MATRIX UNIT --- */
-    getY = () => -Math.random() * this.app.renderer.height
-    getSpeed = () =>
-        Math.random() / getRandomNumber(minWaterfallSpeed, maxWaterfallSpeed)
-    getChainLength = () =>
-        Math.floor(getRandomNumber(minChainSize, maxChainSize))
-    getRandomSymbolIndex = () => Math.floor(Math.random() * symbolsCount)
-    getChain = () =>
-        Array.from({ length: this.getChainLength() }, () =>
-            this.getRandomSymbolIndex()
-        )
-
-    getNewUnit = () => ({
-        chain: this.getChain(),
-        speed: this.getSpeed(),
-        y: this.getY()
-    })
-
-    gToPath(d: string): string {
-        return `<svg xmlns="http://www.w3.org/2000/svg"><path d="${d}" /></svg>`
-    }
-
-    /** --- SVG → Graphics CACHE --- */
-    getPathGraphic = (symbol: Symbol) => {
-        if (this.pathCache.has(symbol.d)) return this.pathCache.get(symbol.d)!
-
-        const g = new Graphics()
-        const path = this.gToPath(symbol.d)
-        g.svg(path)
-        this.pathCache.set(symbol.d, g)
-        return g
-    }
-
-    /** --- COLUMN CREATION --- */
-    createColumn(col: number) {
-        const unit = this.matrix[col];
-        const columnContainer = new Container();
-
-        unit.chain.forEach((symbolIndex, j) => {
-            const isFirstSymbol = j === unit.chain.length - 1
-
-            const symbol = symbols[symbolIndex]
-            const g = this.getPathGraphic(symbol)
-
-            const s = new Sprite(this.getSymbolTexture(g))
-
-            s.scale.set(symbolScale)
-            s.x = col * symbolSize
-            s.y = unit.y + j * (symbolSize + 15)
-
-            s.tint = isFirstSymbol ? toPixiColor(firstSymbolColor) : toPixiColor(matrixColor)
-
-            s.alpha = 0.02 + (1 - 0.2) * (j / (unit.chain.length - 1))
-
-            columnContainer.addChild(s)
-        });
-
-        this.container.addChild(columnContainer)
-    }
-
-    /** --- Render Graphics into Texture --- */
-    getSymbolTexture = (graphic: Graphics): RenderTexture => {
-        const bounds = graphic.getLocalBounds()
-        const tex = RenderTexture.create({
-            width: bounds.width,
-            height: bounds.height
+        app.ticker.add((time) => {
+            this.update(time)
         })
-        this.app.renderer.render(graphic, { renderTexture: tex })
-        return tex
     }
 
-    /** --- RENDER --- */
-    update = () => {
-        for (let col = 0; col < this.matrix.length; col++) {
-            const unit = this.matrix[col]
-            const column = this.container.children[col] as Container
-
-            unit.y += unit.speed
-
-            if (unit.y > this.app.renderer.height) {
-                this.matrix[col] = this.getNewUnit()
-                this.container.removeChild(column)
-                this.createColumn(col)
-                continue
-            }
-
-            for (let j = 0; j < column.children.length; j++) {
-                const sprite = column.children[j] as Sprite
-
-                const isFirst = j === unit.chain.length - 1
-
-                // shuffle symbol
-                if (
-                    !isFirst &&
-                    Math.random() * 100 > 100 - j * symbolShuffleSpeed
-                ) {
-                    const rnd = symbols[this.getRandomSymbolIndex()]
-                    const g = this.getPathGraphic(rnd)
-                    sprite.texture = this.getSymbolTexture(g)
+    generateTextures() {
+        const chars = config.characters
+        for (let i = 0; i < chars.length; i++) {
+            const textObj = new Text({
+                text: chars[i],
+                style: {
+                    fontFamily: "monospace",
+                    fontSize: config.symbolSize,
+                    fill: config.mainColor,
+                    dropShadow: {
+                        color: config.firstColor,
+                        blur: 10,
+                        distance: 4,
+                        angle: Math.PI / 2
+                    }
                 }
+            })
+            this.textures.push(this.app.renderer.generateTexture(textObj))
+        }
+    }
 
-                sprite.x = col * symbolSize
-                sprite.y = unit.y + j * (symbolSize + 15)
+    createColumns() {
+        const w = this.app.renderer.width
+        const cols = Math.floor(w / config.symbolSize)
+
+        for (let i = 0; i < cols; i++) {
+            const column = new Column(
+                i * config.symbolSize,
+                this.app.renderer.height,
+                this.particleContainer,
+                this.textures
+            )
+            this.columns.push(column)
+        }
+    }
+
+    update = (time: Ticker) => {
+        this.columns.forEach(col => col.update(time))
+    }
+
+    reset() {
+        this.particleContainer.removeChildren()
+        this.columns = []
+        this.createColumns()
+    }
+}
+
+class Column {
+    x: number
+    h: number
+    particles: Sprite[] = []
+    shuffleCounter: number = 0
+    textures: Texture[]
+    container: Container
+    fallspeed: number = 0
+    headShuffleSpeed: number = 2.1
+    headShuffleCounter: number = 0
+
+    constructor(
+        x: number,
+        height: number,
+        container: Container,
+        textures: Texture[]
+    ) {
+        this.x = x
+        this.h = height
+        this.container = container
+        this.textures = textures
+        this.fallspeed = rand(config.minFallSpeed, config.maxFallSpeed)
+        this.createChain()
+    }
+
+    createChain() {
+        const length = rand(config.minChain, config.maxChain)
+        for (let i = 0; i < length; i++) {
+            const texture = this.getRandomTexture()
+            const particle = new Sprite(texture)
+            particle.x = this.x
+            particle.y = -i * config.symbolSize
+            const t = (length - 1 - i) / (length - 1)
+            particle.alpha = 0.25 + t * 0.75
+            particle.tint = i === 0 ? config.firstColor : config.mainColor
+            this.particles.push(particle)
+            this.container.addChild(particle)
+        }
+    }
+
+    getRandomTexture() {
+        return this.textures[Math.floor(Math.random() * this.textures.length)]
+    }
+
+    update(time: Ticker) {
+        this.shuffleCounter += time.deltaTime
+        const shuffleSpeed = rand(config.minShuffleSpeed, config.maxShuffleSpeed)
+        if (this.shuffleCounter > shuffleSpeed) {
+            this.shuffleCounter = 0
+            const index = rand(0, this.particles.length - 2)
+            this.particles[index].texture = this.getRandomTexture()
+        }
+
+        const head = this.particles[0]
+        head.tint = config.firstColor
+
+        this.headShuffleCounter += time.deltaTime
+        if (this.headShuffleCounter > this.headShuffleSpeed) {
+            this.headShuffleCounter = 0
+            head.texture = this.getRandomTexture()
+        }
+
+        for (let sprite of this.particles) {
+            const speed = this.fallspeed * time.deltaTime
+            sprite.y += speed
+            if (sprite.y > this.h) {
+                sprite.y = -this.particles.length * config.symbolSize
             }
         }
     }
+}
+
+function rand(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
