@@ -1,1 +1,0 @@
-<div class="config">Config</div>

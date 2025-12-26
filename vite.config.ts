@@ -1,13 +1,9 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
 
+// https://vite.dev/config/
 export default defineConfig({
-	plugins: [sveltekit()],
-	css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: '@use "src/variables.scss" as *;'
-            }
-        }
-    }
+  server: {
+    port: 8080,
+    open: true,
+  },
 });
