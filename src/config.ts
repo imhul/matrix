@@ -5,13 +5,15 @@ export const config = {
     minShuffleSpeed: 0.1,
     maxShuffleSpeed: 2,
 
+    headShuffleSpeed: 10, // ~0.17 секунд при 60 FPS
+
     symbolSize: 22,
     minChain: 64,
     maxChain: 128,
 
     bgColor: "0x000000",
-    mainColor: "0x00ff84",
-    firstColor: "0xffffffff",
+    mainColor: "0x00DB00",
+    firstColor: "0xffffff",
     shadowColor: "#299258",
 
     characters:
