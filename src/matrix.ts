@@ -1,6 +1,5 @@
 import {
     Sprite,
-    Color,
     Graphics,
     Container,
     Application,
@@ -72,15 +71,20 @@ export class Matrix {
         y: this.getY()
     })
 
+    gToPath(d: string): string {
+        return `<svg xmlns="http://www.w3.org/2000/svg"><path d="${d}" /></svg>`
+    }
+
     /** --- SVG → Graphics CACHE --- */
     getPathGraphic = (symbol: Symbol) => {
         if (this.pathCache.has(symbol.d)) return this.pathCache.get(symbol.d)!
 
         const g = new Graphics()
-        g.svg(symbol.d)
+        const path = this.gToPath(symbol.d)
+        g.svg(path)
         this.pathCache.set(symbol.d, g)
         return g
-    };
+    }
 
     /** --- COLUMN CREATION --- */
     createColumn(col: number) {
