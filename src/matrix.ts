@@ -157,6 +157,7 @@ class Column {
             sprite.y = -1 * config.symbolSize // top offset hotfix
             sprite.alpha = 1
             sprite.tint = config.firstColor
+            sprite.label = "head"
             this.container.addChild(sprite)
             this.headSprite = sprite
             this.headIndex = 0
@@ -257,8 +258,10 @@ class Column {
             return
         }
 
-        // Створення нового символу-X якщо потрібно
-        if (!this.isActive && this.headIndex === -1 && !this.columnCompleted) {
+        const headCount = this.particles.filter(p => p?.label === "head").length
+        const spawnChance = Math.random() < 0.02
+
+        if (headCount < 2 && spawnChance) {
             this.createHead()
             return
         }
