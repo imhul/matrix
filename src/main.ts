@@ -9,12 +9,7 @@ import { config } from "./config";
     document.getElementById("pixi-container")!.appendChild(app.canvas)
 
     app.stage.filters = [
-        new GlowFilter({
-            distance: 5,
-            outerStrength: 1,
-            color: config.mainColor,
-            quality: 0.5,
-        })
+        new GlowFilter(config.glowFilterConfig)
     ]
 
     const matrix = new Matrix(app)

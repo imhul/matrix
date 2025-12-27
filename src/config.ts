@@ -17,9 +17,20 @@ export const config = {
     shadowColor: "#299258",
     whiteShadowColor: "#ffffff",
 
+    glowFilterConfig: {
+        distance: 8,
+        outerStrength: 1,
+        color: "#b6ffb6ff",
+        quality: 0.5,
+    },
+
     characters:
         // Greek
         "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψω" +
         // Katakana
         "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"
+}
+
+export function rand(min: number, max: number) {
+    return Math.random() * (max - min) + min
 }
