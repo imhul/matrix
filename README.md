@@ -2,6 +2,10 @@
 
 This project creates a Matrix rain effect using PixiJS and TypeScript.
 
+### Demo
+
+You can view a [live demo here](https://imhul.github.io/matrix/)
+
 ### Features
 
 - Realistic Matrix rain animation
