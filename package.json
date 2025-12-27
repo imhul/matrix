@@ -1,42 +1,42 @@
 {
-    "name": "matrix",
-    "version": "1.0.1",
-    "description": "matrix code background",
-    "keywords": [
-        "ts",
-        "matrix",
-        "matrix rain",
-        "code rain",
-        "background",
-        "pixijs",
-        "pixi",
-        "code"
-    ],
-    "author": "Tkachuk Zakhar",
-    "license": "MIT",
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "start": "yarn run dev",
-        "build": "yarn run format && yarn run lint && tsc && vite build",
-        "lint": "eslint .",
-        "dev": "vite",
-        "format": "prettier --write .",
-        "preview": "vite preview"
-    },
-    "dependencies": {
-        "pixi-filters": "^6.1.5",
-        "pixi.js": "^8.8.1",
-        "terser": "^5.44.1"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.21.0",
-        "eslint": "^9.21.0",
-        "eslint-config-prettier": "^10.1.2",
-        "eslint-plugin-prettier": "^5.2.6",
-        "prettier": "^3.5.3",
-        "typescript": "~5.7.3",
-        "typescript-eslint": "^8.25.0",
-        "vite": "^6.2.0"
-    }
+	"name": "matrix",
+	"version": "1.0.1",
+	"description": "matrix code background",
+	"keywords": [
+		"ts",
+		"matrix",
+		"matrix rain",
+		"code rain",
+		"background",
+		"pixijs",
+		"pixi",
+		"code"
+	],
+	"author": "Tkachuk Zakhar",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "yarn run dev",
+		"build": "yarn run format && yarn run lint && tsc && vite build",
+		"lint": "eslint .",
+		"dev": "vite",
+		"format": "prettier --write .",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"pixi-filters": "^6.1.5",
+		"pixi.js": "^8.8.1",
+		"terser": "^5.44.1"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.21.0",
+		"eslint": "^9.21.0",
+		"eslint-config-prettier": "^10.1.2",
+		"eslint-plugin-prettier": "^5.2.6",
+		"prettier": "^3.5.3",
+		"typescript": "~5.7.3",
+		"typescript-eslint": "^8.25.0",
+		"vite": "^6.2.0"
+	}
 }
