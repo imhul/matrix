@@ -1,28 +1,28 @@
-import { Container, Application, Texture, Text, Ticker } from 'pixi.js';
-import { Column } from './column';
-import { config } from './config';
+import { Container, Application, Texture, Text, Ticker } from 'pixi.js'
+import { Column } from './column'
+import { config } from './config'
 
 export class Matrix {
-	app: Application;
-	particleContainer: Container;
-	columns: Column[] = [];
-	textures: Texture[] = [];
-	headTextures: Texture[] = [];
+	app: Application
+	particleContainer: Container
+	columns: Column[] = []
+	textures: Texture[] = []
+	headTextures: Texture[] = []
 
 	constructor(app: Application) {
-		this.app = app;
-		this.particleContainer = new Container();
-		app.stage.addChild(this.particleContainer);
-		this.generateTextures();
-		this.createColumns();
+		this.app = app
+		this.particleContainer = new Container()
+		app.stage.addChild(this.particleContainer)
+		this.generateTextures()
+		this.createColumns()
 
 		app.ticker.add((time) => {
-			this.update(time);
-		});
+			this.update(time)
+		})
 	}
 
 	generateTextures() {
-		const chars = config.characters;
+		const chars = config.characters
 
 		for (let i = 0; i < chars.length; i++) {
 			const textObj = new Text({
@@ -38,8 +38,8 @@ export class Matrix {
 						angle: Math.PI / 2
 					}
 				}
-			});
-			this.textures.push(this.app.renderer.generateTexture(textObj));
+			})
+			this.textures.push(this.app.renderer.generateTexture(textObj))
 		}
 
 		for (let i = 0; i < chars.length; i++) {
@@ -56,14 +56,14 @@ export class Matrix {
 						angle: Math.PI / 2
 					}
 				}
-			});
-			this.headTextures.push(this.app.renderer.generateTexture(textObj));
+			})
+			this.headTextures.push(this.app.renderer.generateTexture(textObj))
 		}
 	}
 
 	createColumns() {
-		const w = this.app.renderer.width;
-		const cols = Math.floor(w / config.symbolSize);
+		const w = this.app.renderer.width
+		const cols = Math.floor(w / config.symbolSize)
 
 		for (let i = 0; i < cols; i++) {
 			const column = new Column(
@@ -72,18 +72,18 @@ export class Matrix {
 				this.particleContainer,
 				this.textures,
 				this.headTextures
-			);
-			this.columns.push(column);
+			)
+			this.columns.push(column)
 		}
 	}
 
 	update = (time: Ticker) => {
-		this.columns.forEach((col) => col.update(time));
-	};
+		this.columns.forEach((col) => col.update(time))
+	}
 
 	reset() {
-		this.particleContainer.removeChildren();
-		this.columns = [];
-		this.createColumns();
+		this.particleContainer.removeChildren()
+		this.columns = []
+		this.createColumns()
 	}
 }
