@@ -5,7 +5,7 @@ import { config } from "./config";
 
 (async () => {
     const app = new Application()
-    await app.init({ background: "#000000ff", resizeTo: window })
+    await app.init({ background: config.bgColor, resizeTo: window })
     document.getElementById("matrix-rain")!.appendChild(app.canvas)
 
     app.stage.filters = [
@@ -16,5 +16,9 @@ import { config } from "./config";
 
     window.addEventListener('keyup', (e) => {
         if (e.key === 'r' || e.key === 'R') matrix.reset()
+    })
+
+    window.addEventListener('resize', () => {
+        matrix.reset()
     })
 })()

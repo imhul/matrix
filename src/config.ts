@@ -3,7 +3,7 @@ export const config = {
     maxFallSpeed: 8,
 
     minShuffleSpeed: 0.5,
-    maxShuffleSpeed: 5,
+    maxShuffleSpeed: 2,
     headShuffleSpeed: 10,
 
     symbolSize: 22,
