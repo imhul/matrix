@@ -1,12 +1,15 @@
 {
-    "name": "matrix.js",
+    "name": "matrix",
     "version": "1.0.1",
-    "description": "matrix code background js library",
+    "description": "matrix code background",
     "keywords": [
-        "js",
+        "ts",
         "matrix",
+        "matrix rain",
+        "code rain",
         "background",
-        "library",
+        "pixijs",
+        "pixi",
         "code"
     ],
     "author": "Tkachuk Zakhar",
