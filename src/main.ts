@@ -6,7 +6,7 @@ import { config } from "./config";
 (async () => {
     const app = new Application()
     await app.init({ background: "#000000ff", resizeTo: window })
-    document.getElementById("pixi-container")!.appendChild(app.canvas)
+    document.getElementById("matrix-rain")!.appendChild(app.canvas)
 
     app.stage.filters = [
         new GlowFilter(config.glowFilterConfig)

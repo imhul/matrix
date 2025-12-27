@@ -104,6 +104,9 @@ class Column {
     columnCompleted: boolean = false
     maxLength: number = 0
     alphaStep: number = 0
+    particleShuffleTimers: Map<Sprite, number> = new Map()
+    minParticleShuffleTime: number = config.minShuffleSpeed * 60
+    maxParticleShuffleTime: number = config.maxShuffleSpeed * 60
 
     constructor(
         x: number,
@@ -139,29 +142,21 @@ class Column {
     canCreateNewHead(): boolean {
         if (this.heads.length === 0) return true
 
-        // Знаходимо найближчу голову зверху
         const topHead = this.heads.reduce((closest, head) => {
             if (!closest || head.index < closest.index) return head
             return closest
         }, null as Head | null)
 
         if (!topHead) return true
-
-        // Визначаємо позицію "хвоста" найближчої голови
-        // Хвіст - це символ з максимальною прозорістю (найстаріший)
         const tailIndex = Math.max(0, topHead.index - topHead.maxLength)
-
-        // Відстань між хвостом попередньої голови та новою головою (яка буде на позиції 0)
         const distance = Math.abs(0 - tailIndex)
 
-        // Відстань має бути від 1 до 10 символів
         return distance >= 1 && distance <= 10
     }
 
     createHead() {
-        if (this.heads.length >= 2) return // Максимум 2 голови
+        if (this.heads.length >= 2) return
 
-        // Перевіряємо відстань до найближчої голови або хвоста
         const canCreate = this.canCreateNewHead()
         if (!canCreate) return
 
@@ -194,20 +189,15 @@ class Column {
     moveHead(head: Head) {
         if (!head.sprite) return
 
-        // Перевіряємо, чи нова позиція не занадто близько до іншої голови
         const nextIndex = head.index + 1
         const otherHeads = this.heads.filter(h => h !== head)
 
         for (const otherHead of otherHeads) {
-            // Відстань між головами
             const distance = Math.abs(nextIndex - otherHead.index)
-            // Відстань до хвоста іншої голови
             const otherTailIndex = Math.max(0, otherHead.index - otherHead.maxLength)
             const distanceToTail = Math.abs(nextIndex - otherTailIndex)
 
-            // Якщо занадто близько до іншої голови або її хвоста
             if (distance < 5 || distanceToTail < 5) {
-                // Трохи сповільнюємо рух
                 head.moveDelay = Math.min(head.moveDelay * 1.5, 0.3 * 60)
                 return
             }
@@ -219,13 +209,11 @@ class Column {
         if (currentIndex > 0) {
             const prevTexture = this.getRandomHeadTexture()
             const prevSprite = new Sprite(prevTexture)
+            const stepIndex = head.length - 1
             prevSprite.x = this.x
             prevSprite.y = currentSprite.y
             prevSprite.tint = config.mainColor
-
-            const stepIndex = head.length - 1
             prevSprite.alpha = Math.max(0, 1 - head.alphaStep * stepIndex)
-
             this.container.addChild(prevSprite)
             head.particles[currentIndex] = prevSprite
         }
@@ -253,14 +241,12 @@ class Column {
         if (nextIndex >= this.totalRows - 1) {
             this.container.removeChild(currentSprite)
 
-            // Видаляємо всі символи цієї голови
             for (let i = 0; i < head.particles.length; i++) {
                 if (head.particles[i]) {
                     this.container.removeChild(head.particles[i]!)
                 }
             }
 
-            // Видаляємо голову з масиву
             this.heads = this.heads.filter(h => h !== head)
         }
     }
@@ -271,13 +257,11 @@ class Column {
             return
         }
 
-        // Зменшуємо шанс створення нової голови
-        const spawnChance = Math.random() < 0.005 // 0.5% шанс кожен кадр
+        const spawnChance = Math.random() < 0.005
         if (spawnChance) {
             this.createHead()
         }
 
-        // Оновлюємо кожну голову
         for (let i = this.heads.length - 1; i >= 0; i--) {
             const head = this.heads[i]
 
@@ -292,11 +276,9 @@ class Column {
             if (head.moveCounter > head.moveDelay) {
                 head.moveCounter = 0
                 this.moveHead(head)
-                // Відновлюємо нормальну швидкість
                 head.moveDelay = rand(0.05, 0.15) * 60
             }
 
-            // Оновлення прозорості символів цієї голови
             for (let j = 0; j < head.particles.length; j++) {
                 const sprite = head.particles[j]
                 if (sprite && sprite !== head.sprite) {

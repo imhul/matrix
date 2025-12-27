@@ -2,10 +2,9 @@ export const config = {
     minFallSpeed: 4,
     maxFallSpeed: 8,
 
-    minShuffleSpeed: 0.1,
-    maxShuffleSpeed: 2,
-
-    headShuffleSpeed: 10, // ~0.17 секунд при 60 FPS
+    minShuffleSpeed: 0.5,
+    maxShuffleSpeed: 5,
+    headShuffleSpeed: 10,
 
     symbolSize: 22,
     minChain: 64,
