@@ -20,7 +20,6 @@
         "dev": "vite"
     },
     "dependencies": {
-        "@pixi/filter-glow": "^5.2.1",
         "pixi-filters": "^6.1.5",
         "pixi.js": "^8.8.1"
     },

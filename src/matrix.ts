@@ -176,9 +176,7 @@ class Column {
         if (currentIndex > 0) {
             // Копіюємо символ-X в символ-A1 на попередній позиції
             // Для символів-A використовуємо звичайні текстури (без тіні)
-            const prevTexture = this.textures[
-                Math.floor(Math.random() * this.textures.length)
-            ]
+            const prevTexture = this.getRandomHeadTexture()
             const prevSprite = new Sprite(prevTexture)
             prevSprite.x = this.x
             prevSprite.y = currentSprite.y
