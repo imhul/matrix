@@ -11,10 +11,11 @@ export const config = {
     minChain: 64,
     maxChain: 128,
 
-    bgColor: "0x000000",
-    mainColor: "0x00DB00",
-    firstColor: "0xffffff",
+    bgColor: "#000000",
+    mainColor: "#00DB00",
+    firstColor: "#ffffff",
     shadowColor: "#299258",
+    whiteShadowColor: "#ffffff",
 
     characters:
         // Greek

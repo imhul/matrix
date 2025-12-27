@@ -31,6 +31,12 @@ export class Matrix {
                     fontFamily: "monospace",
                     fontSize: config.symbolSize,
                     fill: config.mainColor,
+                    dropShadow: {
+                        color: config.whiteShadowColor,
+                        blur: 10,
+                        distance: 8,
+                        angle: Math.PI / 2
+                    }
                 }
             })
             this.textures.push(this.app.renderer.generateTexture(textObj))
@@ -45,9 +51,9 @@ export class Matrix {
                     fontSize: config.symbolSize,
                     fill: config.firstColor,
                     dropShadow: {
-                        color: config.shadowColor,
+                        color: config.whiteShadowColor,
                         blur: 10,
-                        distance: 4,
+                        distance: 8,
                         angle: Math.PI / 2
                     }
                 }
@@ -145,22 +151,17 @@ class Column {
 
     createHead() {
         if (this.headIndex === -1 && !this.columnCompleted) {
-            // Створюємо новий символ-X на верхній позиції
             const texture = this.getRandomHeadTexture()
             const sprite = new Sprite(texture)
             sprite.x = this.x
-            sprite.y = 0
+            sprite.y = -1 * config.symbolSize // top offset hotfix
             sprite.alpha = 1
-            // Для символів-X не встановлюємо tint, бо вони вже білі з текстури
             this.container.addChild(sprite)
-
             this.headSprite = sprite
             this.headIndex = 0
             this.columnLength = 1
             this.isActive = true
             this.columnCompleted = false
-
-            // Записуємо в масив
             this.particles[0] = sprite
         }
     }
@@ -184,7 +185,7 @@ class Column {
             prevSprite.tint = config.mainColor
 
             // Встановлюємо прозорість згідно з формулою
-            const stepIndex = this.columnLength - 1 // Індекс у стовбчику (0 для X, 1 для A1, 2 для A2...)
+            const stepIndex = this.columnLength - 1
             prevSprite.alpha = Math.max(0, 1 - this.alphaStep * stepIndex)
 
             this.container.addChild(prevSprite)
