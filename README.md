@@ -10,9 +10,7 @@ This project creates a Matrix rain effect using PixiJS and TypeScript.
 
 ### Installation
 
-    ```bash
-    git clone https://github.com/imhul/matrix.git
-    cd matrix
-    npm install or yarn
-    npm run dev or yarn dev
-    ```
+1. git clone https://github.com/imhul/matrix.git
+2. cd matrix
+3. npm install or yarn
+4. npm run dev or yarn dev
