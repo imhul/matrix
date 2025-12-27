@@ -17,7 +17,7 @@ export const config = {
 	whiteShadowColor: '#ffffff',
 
 	glowFilterConfig: {
-		distance: 8,
+		distance: 4,
 		outerStrength: 1,
 		color: '#b6ffb6ff',
 		quality: 0.5

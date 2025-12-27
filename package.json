@@ -14,15 +14,16 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "npm run dev",
-		"build": "npm run lint && tsc && vite build",
+		"start": "yarn run dev",
+		"build": "yarn run format && yarn run lint && tsc && vite build",
 		"lint": "eslint .",
 		"dev": "vite",
 		"format": "prettier --write ."
 	},
 	"dependencies": {
 		"pixi-filters": "^6.1.5",
-		"pixi.js": "^8.8.1"
+		"pixi.js": "^8.8.1",
+		"terser": "^5.44.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.21.0",
