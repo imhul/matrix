@@ -156,6 +156,7 @@ class Column {
             sprite.x = this.x
             sprite.y = -1 * config.symbolSize // top offset hotfix
             sprite.alpha = 1
+            sprite.tint = config.firstColor
             this.container.addChild(sprite)
             this.headSprite = sprite
             this.headIndex = 0
@@ -174,8 +175,6 @@ class Column {
         const currentSprite = this.headSprite
 
         if (currentIndex > 0) {
-            // Копіюємо символ-X в символ-A1 на попередній позиції
-            // Для символів-A використовуємо звичайні текстури (без тіні)
             const prevTexture = this.getRandomHeadTexture()
             const prevSprite = new Sprite(prevTexture)
             prevSprite.x = this.x
@@ -194,12 +193,18 @@ class Column {
         const nextIndex = currentIndex + 1
         currentSprite.y += config.symbolSize
         this.headIndex = nextIndex
+        currentSprite.tint = config.firstColor
 
         // Перевіряємо чи не досягли максимальної довжини
         if (this.columnLength >= this.maxLength) {
             // Очищуємо найстаріший символ
             const oldestIndex = nextIndex - this.maxLength
-            if (oldestIndex >= 0 && this.particles[oldestIndex]) {
+
+            if (
+                oldestIndex >= 0 &&
+                this.particles[oldestIndex] &&
+                this.particles[oldestIndex] !== this.headSprite
+            ) {
                 this.container.removeChild(this.particles[oldestIndex]!)
                 this.particles[oldestIndex] = null
             }
@@ -260,11 +265,11 @@ class Column {
 
         // Оновлення символу-X
         if (this.headSprite) {
-            // Зміна символу-X
             this.headShuffleCounter += time.deltaTime
             if (this.headShuffleCounter > this.headShuffleSpeed) {
                 this.headShuffleCounter = 0
                 this.headSprite.texture = this.getRandomHeadTexture()
+                this.headSprite.tint = config.firstColor
             }
 
             // Рух вниз
