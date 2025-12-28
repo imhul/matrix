@@ -114,7 +114,7 @@ export class Column {
 			const otherTailIndex = Math.max(0, otherHead.index - otherHead.maxLength)
 			const distanceToTail = Math.abs(nextIndex - otherTailIndex)
 
-			if (distance < 20 || distanceToTail < 2) {
+			if (distance < 5 || distanceToTail < 2) {
 				head.moveDelay = Math.min(head.moveDelay * 1.5, 0.3 * 60)
 				return
 			}
