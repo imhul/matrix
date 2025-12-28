@@ -74,7 +74,7 @@ async function showWelcomeScreen(): Promise<void> {
 
 	document.getElementById('matrix-rain')!.appendChild(app.canvas)
 	app.stage.filters = [new GlowFilter(glowFilterConfig)]
-	let matrix = new Matrix(app)
+	const matrix = new Matrix(app)
 	let open = false
 
 	const settingsPanel = document.getElementById('settings-panel')!
