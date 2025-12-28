@@ -27,7 +27,7 @@ export class Column {
 		textures: Texture[],
 		headTextures: Texture[]
 	) {
-		const columnHeightPercent = rand(30, 80) / 100
+		const columnHeightPercent = rand(config.minChain, config.maxChain) / 100
 		const columnHeight = screenHeight * columnHeightPercent
 
 		this.x = x
@@ -90,7 +90,7 @@ export class Column {
 			length: 1,
 			moveCounter: 0,
 			shuffleCounter: 0,
-			moveDelay: rand(0.05, 0.15) * 60,
+			moveDelay: rand(config.minFallSpeed, config.maxFallSpeed) * 60,
 			maxLength: Math.floor((this.screenHeight * rand(30, 80)) / 100 / config.symbolSize),
 			alphaStep: 0,
 			particles: new Array(this.totalRows).fill(null)
@@ -182,7 +182,7 @@ export class Column {
 			return
 		}
 
-		const spawnChance = Math.random() < 0.005
+		const spawnChance = Math.random() < config.newHeadChance
 		if (spawnChance) {
 			this.createHead()
 		}
@@ -201,7 +201,7 @@ export class Column {
 			if (head.moveCounter > head.moveDelay) {
 				head.moveCounter = 0
 				this.moveHead(head)
-				head.moveDelay = rand(0.05, 0.15) * 60
+				head.moveDelay = rand(config.minFallSpeed, config.maxFallSpeed) * 60
 			}
 
 			for (let j = 0; j < head.particles.length; j++) {

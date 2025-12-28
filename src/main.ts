@@ -1,21 +1,15 @@
 import { Application } from 'pixi.js'
 import { GlowFilter } from 'pixi-filters'
 import { Matrix } from './matrix'
-import { config } from './config'
+import { appConfig, glowFilterConfig } from './config'
 
 // app
 ;(async () => {
 	const app = new Application()
-	await app.init({
-		background: config.bgColor,
-		resizeTo: window,
-		resolution: window.devicePixelRatio || 1,
-		autoDensity: true,
-		antialias: false
-	})
+	await app.init(appConfig)
 	document.getElementById('matrix-rain')!.appendChild(app.canvas)
 
-	app.stage.filters = [new GlowFilter(config.glowFilterConfig)]
+	app.stage.filters = [new GlowFilter(glowFilterConfig)]
 
 	const matrix = new Matrix(app)
 
