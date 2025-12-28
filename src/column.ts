@@ -91,7 +91,9 @@ export class Column {
 			moveCounter: 0,
 			shuffleCounter: 0,
 			moveDelay: rand(config.minFallSpeed, config.maxFallSpeed) * 60,
-			maxLength: Math.floor((this.screenHeight * rand(30, 80)) / 100 / config.symbolSize),
+			maxLength: Math.floor(
+				(this.screenHeight * rand(config.minChain, config.maxChain)) / 100 / config.symbolSize
+			),
 			alphaStep: 0,
 			particles: new Array(this.totalRows).fill(null)
 		}
@@ -112,7 +114,7 @@ export class Column {
 			const otherTailIndex = Math.max(0, otherHead.index - otherHead.maxLength)
 			const distanceToTail = Math.abs(nextIndex - otherTailIndex)
 
-			if (distance < 5 || distanceToTail < 5) {
+			if (distance < 20 || distanceToTail < 2) {
 				head.moveDelay = Math.min(head.moveDelay * 1.5, 0.3 * 60)
 				return
 			}
