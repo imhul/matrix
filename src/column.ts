@@ -92,7 +92,9 @@ export class Column {
 			shuffleCounter: 0,
 			moveDelay: rand(config.minFallSpeed, config.maxFallSpeed) * 60,
 			maxLength: Math.floor(
-				(this.screenHeight * rand(config.minChain, config.maxChain)) / 100 / config.symbolSize
+				(this.screenHeight * rand(config.minChain, config.maxChain)) /
+					100 /
+					config.symbolSize
 			),
 			alphaStep: 0,
 			particles: new Array(this.totalRows).fill(null)

@@ -97,8 +97,12 @@ async function showWelcomeScreen(): Promise<void> {
 
 	applyButton.addEventListener('click', () => {
 		const newConfig = {
-			minFallSpeed: parseFloat((document.getElementById('minFallSpeed') as HTMLInputElement).value),
-			maxFallSpeed: parseFloat((document.getElementById('maxFallSpeed') as HTMLInputElement).value),
+			minFallSpeed: parseFloat(
+				(document.getElementById('minFallSpeed') as HTMLInputElement).value
+			),
+			maxFallSpeed: parseFloat(
+				(document.getElementById('maxFallSpeed') as HTMLInputElement).value
+			),
 			headShuffleSpeed: parseInt(
 				(document.getElementById('headShuffleSpeed') as HTMLInputElement).value
 			),
