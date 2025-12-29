@@ -34,20 +34,6 @@ async function showWelcomeScreen(): Promise<void> {
 				currentIndex++
 				setTimeout(typeWriter, typingSpeed)
 			} else {
-				const cursor = document.createElement('span')
-				cursor.textContent = '_'
-				cursor.style.animation = 'blink 1s infinite'
-				textSpan.appendChild(cursor)
-
-				const style = document.createElement('style')
-				style.textContent = `
-                    @keyframes blink {
-                        0%, 49% { opacity: 1; }
-                        50%, 100% { opacity: 0; }
-                    }
-                `
-				document.head.appendChild(style)
-
 				const removeScreen = () => {
 					welcomeDiv.style.transition = 'opacity 1s'
 					welcomeDiv.style.opacity = '0'
