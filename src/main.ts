@@ -54,6 +54,14 @@ async function showWelcomeScreen(): Promise<void> {
 
 // app
 ;(async () => {
+	await new Promise<void>((resolve) => {
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', () => resolve())
+		} else {
+			resolve()
+		}
+	})
+
 	const app = new Application()
 	await app.init(appConfig)
 	await showWelcomeScreen()
