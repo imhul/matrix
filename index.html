@@ -1,30 +1,150 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/png" href="./favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Matrix Rain</title>
-		<style>
-			body {
-				margin: 0;
-				padding: 0;
-				background-color: #000000;
-			}
 
-			#matrix-rain {
-				width: 100%;
-				height: 100vh;
-				overflow: hidden;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-		</style>
-		<script type="module" crossorigin src="./matrix-rain.js"></script>
-	</head>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matrix Rain</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            font-family: monospace;
+        }
 
-	<body>
-		<div id="matrix-rain"></div>
-	</body>
+        #matrix-rain {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #settings-panel {
+            position: fixed;
+            top: 20px;
+            right: -360px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00db00;
+            border-radius: 8px;
+            padding: 20px;
+            color: #00db00;
+            transition: right 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        #settings-panel.open {
+            right: 20px;
+        }
+
+        .setting-group {
+            margin-bottom: 15px;
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .setting-group input[type='range'],
+        .setting-group input[type='number'] {
+            width: 100%;
+            background: #001100;
+            border: 1px solid #00db00;
+            color: #00db00;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        .setting-group input[type='range'] {
+            padding: 0;
+        }
+
+        .value-display {
+            color: #ffffff;
+            font-size: 11px;
+        }
+
+        #apply-settings {
+            width: 100%;
+            background: #00db00;
+            color: #000000;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #apply-settings:hover {
+            background: #00ff00;
+        }
+
+        h3 {
+            margin-top: 0;
+            text-align: center;
+            text-shadow: 0 0 10px #00db00;
+        }
+    </style>
+    <script type="module" crossorigin src="./matrix-rain.js"></script>
+</head>
+
+<body>
+    <div id="settings-panel">
+        <h3>Matrix Rain Settings</h3>
+
+        <div class="setting-group">
+            <label>Min Fall Speed:
+                <span class="value-display" id="minFallSpeed-val">0.02</span></label>
+            <input type="range" id="minFallSpeed" min="0.001" max="0.1" step="0.001" value="0.02" />
+        </div>
+
+        <div class="setting-group">
+            <label>Max Fall Speed:
+                <span class="value-display" id="maxFallSpeed-val">0.1</span></label>
+            <input type="range" id="maxFallSpeed" min="0.1" max="0.5" step="0.001" value="0.1" />
+        </div>
+
+        <div class="setting-group">
+            <label>Head Shuffle Speed:
+                <span class="value-display" id="headShuffleSpeed-val">10</span></label>
+            <input type="range" id="headShuffleSpeed" min="1" max="30" step="1" value="10" />
+        </div>
+
+        <div class="setting-group">
+            <label>New Head Chance:
+                <span class="value-display" id="newHeadChance-val">0.005</span></label>
+            <input type="range" id="newHeadChance" min="0.001" max="1" step="0.001" value="0.005" />
+        </div>
+
+        <div class="setting-group">
+            <label>Symbol Size (px):
+                <span class="value-display" id="symbolSize-val">22</span></label>
+            <input type="range" id="symbolSize" min="6" max="50" step="2" value="22" />
+        </div>
+
+        <div class="setting-group">
+            <label>Min Chain (vh): <span class="value-display" id="minChain-val">30</span></label>
+            <input type="range" id="minChain" min="5" max="50" step="1" value="30" />
+        </div>
+
+        <div class="setting-group">
+            <label>Max Chain (vh): <span class="value-display" id="maxChain-val">80</span></label>
+            <input type="range" id="maxChain" min="50" max="100" step="1" value="80" />
+        </div>
+
+        <button id="apply-settings">Apply Settings</button>
+    </div>
+
+    <div id="matrix-rain"></div>
+</body>
+
 </html>
